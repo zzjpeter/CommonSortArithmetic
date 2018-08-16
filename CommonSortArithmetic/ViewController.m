@@ -10,6 +10,8 @@
 
 @interface ViewController ()
 
+@property (nonatomic, strong) NSMutableArray *tempArr;
+
 @end
 
 @implementation ViewController
@@ -21,7 +23,7 @@
     testSelectionSort();
     [self testQuickSort];
     testQuickSort();
-    
+    [self testmergeSort];
 }
 
 
@@ -86,6 +88,7 @@ void testSelectionSort(){
     printList(array,num);
 }
 
+#pragma mark -快速排序 升序
 void testQuickSort(){
     
     int array[10] = {55, 23, 93, 23, 4, 56, 1, 34, 11, 69};
@@ -140,7 +143,7 @@ void quickSortArray(int *array,int leftIndex,int rightIndex){
  */
 - (void)testQuickSort{
     
-    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:@(55), @(23),@(93),@(23),@(4),@(56),@(1),@(34),@(69),nil];
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:@(55), @(23),@(93),@(23),@(4),@(56),@(1),@(34),@(11),@(69),nil];
     
     [self quickSortArray:arr withLeftIndex:0 andRightIndex:arr.count - 1];
     
@@ -185,6 +188,65 @@ void quickSortArray(int *array,int leftIndex,int rightIndex){
     [self quickSortArray:array withLeftIndex:i + 1 andRightIndex:rightIndex];
 }
 
+/*
+ 4、 归并排序
+ 该方法的基本思想是：
+ 1.分解：将待排序的问题分解成大小大致相等的两部分。
+ 2.求解子问题：用归并排序的方法对两个子问题进行递归排序。
+ 3.合并(merge)：将排好序的有序子序列进行合并，得到符合要求的子序列。
+ */
+#pragma mark -归并排序 升序
+-(NSMutableArray *)tempArr
+{
+    if (_tempArr == nil) {
+        _tempArr = [NSMutableArray array];
+    }
+    return _tempArr;
+}
+- (void)testmergeSort{
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:@(55), @(23),@(93),@(23),@(4),@(56),@(1),@(34),@(11),@(69),nil];
+    [self mergeSortArray:arr lowIndex:0 highIndex:arr.count - 1];
+    
+    NSLog(@"%@",arr);
+}
+- (void)mergeSortArray:(NSMutableArray *)array lowIndex:(NSInteger)lowIndex highIndex:(NSInteger)highIndex{
+    
+    if (lowIndex >= highIndex) {
+        return;
+    }
+    NSInteger midIndex = lowIndex + (highIndex - lowIndex)/2;//向下取整
+    [self mergeSortArray:array lowIndex:lowIndex highIndex:midIndex];
+    [self mergeSortArray:array lowIndex:midIndex + 1 highIndex:highIndex];//因为向下取整，所以是加1
+    [self mergeArray:array lowIndex:lowIndex midIndex:midIndex highIndex:highIndex];
+    
+}
+
+- (void)mergeArray:(NSMutableArray *)array lowIndex:(NSInteger)lowIndex midIndex:(NSInteger)midIndex highIndex:(NSInteger)highIndex{
+    
+    for (NSInteger i = lowIndex; i <= highIndex; i++) {
+        self.tempArr[i] = array[i];
+    }
+    
+    NSInteger k = lowIndex;
+    NSInteger l = midIndex + 1;
+    for (NSInteger j = lowIndex; j <= highIndex; j++) {
+        if (l > highIndex) {
+            array[j] = self.tempArr[k];
+            k++;
+        }else if(k > midIndex){
+            array[j] = self.tempArr[l];
+            l++;
+        }else if([self.tempArr[k] integerValue] > [self.tempArr[l] integerValue]){
+            array[j] = self.tempArr[l];
+            l++;
+        }else{
+            array[j] = self.tempArr[k];
+            k++;
+        }
+        
+    }
+}
 
 void printList(int *array,int num){
     
