@@ -19,11 +19,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    testBubbleSort();
-    testSelectionSort();
-    [self testQuickSort];
-    testQuickSort();
-    [self testmergeSort];
+//    testBubbleSort();
+//    testSelectionSort();
+//    [self testQuickSort];
+//    testQuickSort();
+//    [self testmergeSort];
+    
+    testBubbleSort1();
+    testSelectionSort1();
+    testQuicksort1();
 }
 
 
@@ -266,5 +270,84 @@ void printList(int *array,int num){
 }
 
 
+void swap(int &a,int &b){
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void testBubbleSort1(){
+    
+    int array[10] = {55, 23, 93, 23, 4, 56, 1, 34, 11, 69};
+    
+    int num = sizeof(array)/sizeof(int);
+    
+    for (int i = 0; i < num - 1; i++) {
+        for (int j = 0; j < num - 1 - i; j++) {
+            if (array[j] > array[j + 1]) {
+                swap(array[j], array[j + 1]);
+            }
+        }
+    }
+    
+    printList(array, num);
+}
+
+void testSelectionSort1(){
+    
+    int array[10] = {55, 23, 93, 23, 4, 56, 1, 34, 11, 69};
+    
+    int num = sizeof(array)/sizeof(int);
+    
+    for (int i = 0; i < num - 1; i++) {
+        for (int j = i + 1; j < num; j++) {
+            if (array[i] > array[j]) {
+                swap(array[i], array[j]);
+            }
+        }
+    }
+    
+    printList(array, num);
+}
+
+void testQuicksort1(){
+    
+    int array[10] = {55, 23, 93, 23, 4, 56, 1, 34, 11, 69};
+    int num = sizeof(array)/sizeof(int);
+    quickSortArray1(array, 0, num - 1);
+    
+    printList(array,num);
+}
+
+void quickSortArray1(int *array,int leftIndex, int rightIndex){
+    
+    if (leftIndex >= rightIndex) {
+        return;
+    }
+    
+    int i = leftIndex;
+    int j = rightIndex;
+    int key = array[i];//基准数
+    
+    while (i < j) {
+        
+        while (i < j && array[j] >= key) {
+            j--;
+        }
+        array[i] = array[j];
+        
+        while (i < j && array[i] <= key) {
+            i++;
+        }
+        array[j] = array[i];
+        
+    }
+    
+    array[i] = key;
+    
+    quickSortArray1(array, leftIndex, i - 1);
+    quickSortArray1(array, i + 1, rightIndex);
+    
+}
 
 @end
