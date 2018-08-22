@@ -25,9 +25,13 @@
 //    testQuickSort();
 //    [self testmergeSort];
     
-    testBubbleSort1();
-    testSelectionSort1();
-    testQuicksort1();
+//    testBubbleSort1();
+//    testSelectionSort1();
+//    testQuicksort1();
+    
+    testBubbleSort2();
+    testSelectionSort2();
+    testQuicksort2();
 }
 
 
@@ -348,6 +352,79 @@ void quickSortArray1(int *array,int leftIndex, int rightIndex){
     quickSortArray1(array, leftIndex, i - 1);
     quickSortArray1(array, i + 1, rightIndex);
     
+}
+
+void testBubbleSort2(){
+    
+    int array[10] = {55, 23, 93, 23, 4, 56, 1, 34, 11, 69};
+    int num = sizeof(array)/sizeof(int);
+    
+    for (int i = 0; i < num - 1; i++) {
+        for (int j = 0; j < num - 1 - i; j++) {
+            if (array[j] > array[j + 1]) {
+                swap(array[j], array[j + 1]);
+            }
+            
+        }
+    }
+    printList(array,num);
+}
+
+void testSelectionSort2(){
+    
+    int array[10] = {55, 23, 93, 23, 4, 56, 1, 34, 11, 69};
+    int num = sizeof(array)/sizeof(int);
+    
+    for (int i = 0; i < num - 1; i ++) {
+        for (int j = i + 1; j < num; j++) {
+            if (array[i] > array[j]) {
+                swap(array[i], array[j]);
+            }
+           
+        }
+    }
+    printList(array,num);
+}
+
+void testQuicksort2(){
+    
+    int array[10] = {55, 23, 93, 23, 4, 56, 1, 34, 11, 69};
+    int num = sizeof(array)/sizeof(int);
+    quickSortArr2(array, 0, num - 1);
+    
+    printList(array,num);
+}
+
+void quickSortArr2(int *array, int leftIndex, int rightIndex){
+    
+    if (leftIndex >= rightIndex) {
+        return;
+    }
+    
+    int i = leftIndex;
+    int j = rightIndex;
+    int key = array[leftIndex];
+    
+    while (i < j) {
+        
+        while (i < j && array[j] >= key) {
+            j--;
+        }
+        array[i] = array[j];
+        
+        while (i < j && array[i] <= key) {
+            i++;
+        }
+        array[j] = array[i];
+        
+    }
+    
+    array[i] = key;
+    
+    //左边
+    quickSortArr2(array, leftIndex, i - 1);
+    //右边
+    quickSortArr2(array, i + 1, rightIndex);
 }
 
 @end
